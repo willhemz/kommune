@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { InputType } from '../../models/InputType';
+import { InputType } from '../../models';
 import './Input.css';
 
 const Input = ({ value, type, setting }: InputType): ReactElement => {
