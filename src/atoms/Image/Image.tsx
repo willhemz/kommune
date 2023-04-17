@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 import { ImageType } from '../../models';
-import './Image.css';
 
 const Image = ({ url, className }: ImageType): ReactElement => {
   return (

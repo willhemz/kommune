@@ -21,12 +21,16 @@ const SignForm = (): ReactElement => {
         <Input
           type="email"
           value={user.email}
-          setting={{ onChange, placeholder: 'Enter email address' }}
+          setting={{
+            onChange,
+            placeholder: 'Enter email address',
+            name: 'email',
+          }}
         />
         <Input
           type="password"
           value={user.password}
-          setting={{ onChange, placeholder: 'Enter password' }}
+          setting={{ onChange, placeholder: 'Enter password', name: 'email' }}
         />
       </div>
       <Button text="Sign In" type="blue" btn="submit" />
