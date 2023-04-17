@@ -1,5 +1,7 @@
+import { ChangeEvent } from 'react';
+
 type FormProps = {
-  onChange: () => void;
+  onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
   errorMessage?: string;
   placeholder: string;

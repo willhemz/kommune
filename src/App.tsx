@@ -1,4 +1,3 @@
-import { ReactElement } from 'react';
 import { createBrowserRouter as browser } from 'react-router-dom';
 import { useAppSelector } from './hooks';
 
