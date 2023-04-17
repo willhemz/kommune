@@ -2,9 +2,9 @@ import { ChangeEvent } from 'react';
 
 type FormProps = {
   onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
   error?: boolean;
   errorMessage?: string;
-  placeholder: string;
 };
 
 export interface InputType {

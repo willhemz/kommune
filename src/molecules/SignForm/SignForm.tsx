@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
 import { SignUser } from '../../models';
-import { Input } from '../../atoms';
-import './SignForm.css';
+import { Button, Input } from '../../atoms';
 
 const SignForm = (): ReactElement => {
   const [user, setUser] = useState<SignUser>({ email: '', password: '' });
@@ -16,9 +15,9 @@ const SignForm = (): ReactElement => {
   };
 
   const content: ReactElement = (
-    <form noValidate onSubmit={toSubmit}>
+    <form className="form" noValidate onSubmit={toSubmit}>
       <h3>Sign In</h3>
-      <div>
+      <div className="form__content">
         <Input
           type="email"
           value={user.email}
@@ -30,6 +29,7 @@ const SignForm = (): ReactElement => {
           setting={{ onChange, placeholder: 'Enter password' }}
         />
       </div>
+      <Button text="Sign In" type="blue" btn="submit" />
     </form>
   );
 

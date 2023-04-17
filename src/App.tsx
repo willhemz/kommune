@@ -1,14 +1,11 @@
 import { createBrowserRouter as browser } from 'react-router-dom';
-import { useAppSelector } from './hooks';
+import { DefaultHome } from './organisms';
 
-const App = () => {
-  const { loggedin } = useAppSelector((state) => state.user);
-  return browser([
-    {
-      path: '/',
-      element: loggedin ? '' : '',
-    },
-  ]);
-};
+const App = browser([
+  {
+    path: '/',
+    element: <DefaultHome />,
+  },
+]);
 
 export default App;

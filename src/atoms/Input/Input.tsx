@@ -1,13 +1,14 @@
 import { ReactElement } from 'react';
 import { InputType } from '../../models';
-import './Input.css';
 
 const Input = ({ value, type, setting }: InputType): ReactElement => {
-  const { placeholder, onChange, error, errorMessage } = setting;
+  const { placeholder, error, errorMessage, onChange } = setting;
   return (
-    <fieldset>
+    <fieldset className="field">
       <input
+        className="field__input"
         type={type}
+        name={type}
         value={value}
         placeholder={placeholder}
         onChange={onChange}

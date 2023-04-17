@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 import { ButtonType } from '../../models';
-import './Button.css';
 
 const Button = ({ text, onClick, type, btn }: ButtonType): ReactElement => {
   const content: ReactElement = onClick ? (

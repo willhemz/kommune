@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .home {
+    @apply w-full h-screen overflow-hidden relative grid place-items-center;
+  }
+
+  .home__main {
+    @apply w-full h-4/5 px-16 flex justify-between items-center;
+  }
+
+  .home__main--container {
+    @apply w-96 h-full grid gap-3 place-content-center place-items-center;
+  }
+
+  .home__main--container__image {
+    @apply w-full h-full;
+  }
+
+  .home__main--container__text {
+    @apply text-3xl text-white font-[500];
+  }
+  .home__main--container__text span {
+    @apply text-blue-900;
+  }
+}

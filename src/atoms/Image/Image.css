@@ -1,9 +1,3 @@
-@layer components {
-  .container__sm {
-    @apply w-16 h-16 object-cover;
-  }
-
-  .img {
-    @apply w-full h-full;
-  }
+.container--img {
+  @apply w-full h-full;
 }

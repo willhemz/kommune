@@ -2,10 +2,10 @@ import { ReactElement } from 'react';
 import { ImageType } from '../../models';
 import './Image.css';
 
-const Image = ({ url, size }: ImageType): ReactElement => {
+const Image = ({ url, className }: ImageType): ReactElement => {
   return (
-    <div className={`container__${size}`}>
-      <img className="img" src={url} alt="" />
+    <div className={className}>
+      <img className={`container--img`} src={url} alt="" />
     </div>
   );
 };
