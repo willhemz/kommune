@@ -1,20 +1,35 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { ButtonType } from '../../models';
 
-const Button = ({ text, onClick, type, btn }: ButtonType): ReactElement => {
+interface Children {
+  children:
+    | string
+    | number
+    | ReactElement
+    | ReactNode
+    | ReactNode[]
+    | ReactElement[];
+}
+
+const Button = ({
+  onClick,
+  type,
+  btn,
+  children,
+}: ButtonType & Children): ReactElement => {
   const content: ReactElement = onClick ? (
     <button
       className={`btn ${type === 'blue' ? 'btn__blue' : 'btn__white'}`}
       onClick={onClick}
     >
-      {text}
+      {children}
     </button>
   ) : (
     <button
       type={btn}
       className={`btn ${type === 'blue' ? 'btn__blue' : 'btn__white'}`}
     >
-      {text}
+      {children}
     </button>
   );
   return content;

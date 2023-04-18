@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .home {
+    @apply w-full h-screen overflow-hidden relative grid place-items-center;
+  }
+
+  .home__main {
+    @apply w-full h-3/5 px-16 flex justify-between items-center text-white;
+  }
+
+  .home__main--container {
+    @apply w-96 h-full flex flex-col;
+  }
+
+  .home__main--container__image {
+    @apply w-full h-3/5;
+  }
+
+  .home__main--container__desc {
+    @apply text-3xl text-white font-semibold;
+  }
+
+  .home__main--container__text {
+    @apply text-xl text-white font-[500] text-center;
+  }
+  .home__main--container__text span {
+    @apply text-blue-900;
+  }
+
+  .home__main--schedule {
+    @apply w-1/2;
+  }
+
+  .home__main--schedule__desc p {
+    @apply text-lg;
+  }
+
+  .home__main--schedule__formContainer {
+    @apply flex gap-5 items-center mt-5;
+  }
+
+  .formContainer__btn {
+    @apply flex items-center gap-1 px-3 py-2 bg-blue-900 rounded;
+  }
+
+  .formContainer__form {
+    @apply flex items-center gap-1 px-3 py-2 border rounded transition-all duration-300 hover:border-2 w-3/5;
+  }
+
+  .formContainer__form input {
+    @apply bg-transparent w-full;
+  }
+}

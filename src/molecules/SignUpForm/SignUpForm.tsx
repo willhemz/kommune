@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
 import { SignUser, UserInfo } from '../../models';
 import { Button, Input } from '../../atoms';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = (): ReactElement => {
   const [user, setUser] = useState<UserInfo & SignUser>({
@@ -9,6 +10,9 @@ const SignUpForm = (): ReactElement => {
     email: '',
     password: '',
   });
+
+  const navigate = useNavigate();
+
   const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const name = evt.target.name;
     const value = evt.target.value;
@@ -17,6 +21,7 @@ const SignUpForm = (): ReactElement => {
 
   const toSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    navigate('/kommune');
   };
 
   const content: ReactElement = (
@@ -60,7 +65,9 @@ const SignUpForm = (): ReactElement => {
           }}
         />
       </div>
-      <Button text="Sign Up" type="blue" btn="submit" />
+      <Button type="blue" btn="submit">
+        Sign Up
+      </Button>
     </form>
   );
 

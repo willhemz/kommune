@@ -30,10 +30,16 @@ const SignForm = (): ReactElement => {
         <Input
           type="password"
           value={user.password}
-          setting={{ onChange, placeholder: 'Enter password', name: 'email' }}
+          setting={{
+            onChange,
+            placeholder: 'Enter password',
+            name: 'password',
+          }}
         />
       </div>
-      <Button text="Sign In" type="blue" btn="submit" />
+      <Button type="blue" btn="submit">
+        Sign In
+      </Button>
     </form>
   );
 

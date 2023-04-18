@@ -43,7 +43,7 @@ const NavMenu = (): ReactElement => {
   const signin: ReactNode = (
     <div className="nav__footer--signin">
       <span>Already a user?</span>
-      <button>sign in</button>
+      <button onClick={() => navigate('/signin')}>sign in</button>
     </div>
   );
 
@@ -55,7 +55,9 @@ const NavMenu = (): ReactElement => {
       <footer className="nav__footer">
         {!loggedin && signin}
         {currentTime}
-        <Button type="white" btn="button" text={`${firstName} ${lastName}`} />
+        <Button type="white" btn="button">
+          {firstName} {lastName}
+        </Button>
       </footer>
     </nav>
   );

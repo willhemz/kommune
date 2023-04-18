@@ -1,5 +1,5 @@
 import { createBrowserRouter as browser } from 'react-router-dom';
-import { DefaultHome } from './organisms';
+import { DefaultHome, Home } from './organisms';
 import { SignForm, SignUpForm } from './molecules';
 
 const App = browser([
@@ -16,6 +16,10 @@ const App = browser([
         element: <SignForm />,
       },
     ],
+  },
+  {
+    path: '/kommune',
+    element: <Home />,
   },
 ]);
 
