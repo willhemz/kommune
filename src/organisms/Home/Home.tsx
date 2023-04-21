@@ -4,14 +4,19 @@ import './Home.css';
 import { Image, ImgBg } from '../../atoms';
 import { BiVideoPlus } from 'react-icons/bi';
 import { MdOutlineKeyboardAlt } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 const Home = (): ReactElement => {
   const url: string = new URL('../../assets/connected.png', import.meta.url)
     .href;
   const inputRef = useRef<HTMLInputElement>(null!);
+  const navigate = useNavigate();
 
   const icon: ReactNode = (
-    <button className="formContainer__btn">
+    <button
+      onClick={() => navigate('/get-devices')}
+      className="formContainer__btn"
+    >
       <BiVideoPlus />
       <span>New Meeting</span>
     </button>

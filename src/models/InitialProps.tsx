@@ -5,4 +5,5 @@ export interface InitialProps {
   loggedin: boolean;
   user: LogInfo;
   detail: UserInfo;
+  roomId: string;
 }

@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+}
+.getDevices {
+  @apply w-full h-screen overflow-hidden relative flex flex-col items-center justify-center gap-10;
+}
+
+.getDevices__main {
+  @apply w-2/5 h-1/2 bg-black border border-[#ccc] rounded p-0;
+}
+
+.getDevices__main--video {
+  @apply w-full h-full object-cover;
+}
+
+.getDevices__footer {
+  @apply w-full flex justify-center gap-5;
+}
