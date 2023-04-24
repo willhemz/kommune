@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 import { Button } from '../../atoms';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector, useLoad } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import './NavMenu.css';
 
@@ -29,13 +29,16 @@ const NavMenu = (): ReactElement => {
     'November',
     'December',
   ];
+
+  useLoad();
+
   const currentTime: ReactNode = (
     <div className="nav__footer--time">
       <p>
         {hour}:{mins}:{sec}
       </p>
       <p>
-        {day}, {months[month - 1]}
+        {day}, {months[month]}
       </p>
     </div>
   );

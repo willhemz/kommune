@@ -3,6 +3,15 @@ import NavMenu from '../Navmenu/NavMenu';
 import './GetDevices.css';
 import { ImgBg } from '../../atoms';
 import { useNavigate } from 'react-router-dom';
+import { Offer } from '../../models';
+import { addDoc, collection } from 'firebase/firestore';
+import db from '../../firebase';
+import {
+  registerPeerConnectionListeners,
+  useAppDispatch,
+  peerConnection,
+} from '../../hooks';
+import { setRoomId, setStream } from '../../features/UserSlice';
 
 interface Constraints {
   audio: { echoCancellation: boolean };
@@ -11,12 +20,16 @@ interface Constraints {
 
 const GetDevices = (): ReactElement => {
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+
   const videoRef = useRef<HTMLVideoElement>(null!);
+
   const constraints: Constraints = {
     audio: { echoCancellation: true },
     video: true,
   };
+
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     navigator.mediaDevices
@@ -42,6 +55,32 @@ const GetDevices = (): ReactElement => {
     document.location.reload();
   };
 
+  // handle start call
+  const startCall = async () => {
+    registerPeerConnectionListeners();
+    try {
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
+      // send the offer to the remote peer
+      const roomWithOffer: { offer: Offer } = {
+        offer: {
+          type: offer.type,
+          sdp: offer.sdp,
+        },
+      };
+
+      const dbRef = collection(db, 'rooms');
+      const roomRef = await addDoc(dbRef, roomWithOffer);
+
+      const roomId = roomRef.id;
+      dispatch(setRoomId(roomId));
+      dispatch(setStream(localStream as MediaStream));
+      navigate(`/kommune/${roomId}`);
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  };
+
   const video: ReactNode = (
     <video
       className="getDevices__main--video"
@@ -59,7 +98,9 @@ const GetDevices = (): ReactElement => {
   );
 
   const btnCreate: ReactNode = (
-    <button className="btn btn__blue">Create/Join</button>
+    <button onClick={startCall} className="btn btn__blue">
+      Create/Join
+    </button>
   );
 
   const content: ReactElement = (

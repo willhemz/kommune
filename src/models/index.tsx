@@ -8,3 +8,4 @@ export type { InitialProps } from './InitialProps';
 export type { AppDispatch, AppSelector } from './Dispatch';
 export type { UserProps } from './UserProps';
 export type { SignUser } from './SignUser';
+export type { Offer } from './Offer';

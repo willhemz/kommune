@@ -11,9 +11,8 @@ export const getUser = ({ email, userAuth = auth, ...rest }: UserProps) => {
       // Signed in
       const user: User = userCredential.user;
       dispatch(setUser({ uid: user.uid, email: user.email } as LogInfo));
-      getData(email, dispatch);
+      getData(email, dispatch, navigate, '/kommune');
       console.log(user.email, 'account logged in successfully');
-      navigate('/');
     })
     .catch((error) => {
       const errorCode = error.code;

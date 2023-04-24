@@ -9,13 +9,13 @@ const DefaultHome = (): ReactElement => {
     .href;
 
   const content: ReactElement = (
-    <div className="home">
+    <div className="defHome">
       <ImgBg />
       <NavMenu />
-      <main className="home__main">
-        <section className="home__main--container">
-          <Image className="home__main--container__image" url={url} />
-          <p className="home__main--container__text">
+      <main className="defHome__main">
+        <section className="defHome__main--container">
+          <Image className="defHome__main--container__image" url={url} />
+          <p className="defHome__main--container__text">
             Let's <span>Kommune</span>
           </p>
         </section>

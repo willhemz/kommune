@@ -5,6 +5,9 @@ const initialState: InitialProps = {
   loggedin: false,
   user: { uid: '', email: '' },
   detail: { firstName: '', lastName: '' },
+  roomId: '',
+  streamer: null!,
+  remoteStreamer: null!,
 };
 
 const userSlice = createSlice({
@@ -23,9 +26,26 @@ const userSlice = createSlice({
     setDetail: (state, action: PayloadAction<UserInfo>) => {
       state.detail = action.payload;
     },
+    setRoomId: (state, action: PayloadAction<string>) => {
+      state.roomId = action.payload;
+    },
+    setStream: (state, action: PayloadAction<MediaStream>) => {
+      state.streamer = action.payload;
+    },
+    setRemoteStream: (state, action: PayloadAction<MediaStream>) => {
+      state.remoteStreamer = action.payload;
+    },
   },
 });
 
-export const { login, logout, setUser, setDetail } = userSlice.actions;
+export const {
+  login,
+  logout,
+  setUser,
+  setDetail,
+  setRoomId,
+  setStream,
+  setRemoteStream,
+} = userSlice.actions;
 
 export default userSlice.reducer;

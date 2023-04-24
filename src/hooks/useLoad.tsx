@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from './dispatcher';
-import { logout, setUser } from '../features/UserSlice';
+import { login, logout, setUser } from '../features/UserSlice';
 import { LogInfo } from '../models';
+import { getData } from './getData';
 
 export const useLoad = () => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,8 @@ export const useLoad = () => {
       if (user) {
         // logged in
         dispatch(setUser({ uid: user.uid, email: user.email } as LogInfo));
+        dispatch(login());
+        getData(user.email as string, dispatch, navigate, '/kommune');
       } else {
         // logged out
         dispatch(logout());
@@ -20,5 +23,5 @@ export const useLoad = () => {
       }
       return unsubscribe;
     });
-  }, [dispatch]);
+  }, [auth]);
 };

@@ -6,4 +6,6 @@ export interface InitialProps {
   user: LogInfo;
   detail: UserInfo;
   roomId: string;
+  streamer: MediaStream;
+  remoteStreamer: MediaStream;
 }

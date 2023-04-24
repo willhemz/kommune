@@ -1,18 +1,24 @@
 import { User, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
-import { LogInfo, UserProps } from '../models';
-import { login, setUser } from '../features/UserSlice';
+import { LogInfo, UserInfo, UserProps } from '../models';
+import { login, setDetail, setUser } from '../features/UserSlice';
+import { setData } from './setData';
 
-export const createUser = ({ email, userAuth = auth, ...rest }: UserProps) => {
-  const { password, dispatch, navigate } = rest;
+export const createUser = ({
+  firstName,
+  lastName,
+  ...rest
+}: UserInfo & UserProps) => {
+  const { email, password, dispatch, navigate, userAuth = auth } = rest;
   return createUserWithEmailAndPassword(userAuth, email, password)
     .then((userCredential) => {
       // Signed in
       const user: User = userCredential.user;
       dispatch(setUser({ uid: user.uid, email: user.email } as LogInfo));
+      dispatch(setDetail({ firstName, lastName }));
       dispatch(login());
       console.log(user.email, 'account created successfully');
-      navigate('/signup/signup');
+      setData(email, { firstName, lastName }, navigate);
     })
     .catch((error) => {
       const errorCode = error.code;

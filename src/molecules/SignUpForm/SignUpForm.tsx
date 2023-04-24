@@ -1,7 +1,14 @@
-import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
 import { SignUser, UserInfo } from '../../models';
 import { Button, Input } from '../../atoms';
 import { useNavigate } from 'react-router-dom';
+import { createUser, useAppDispatch } from '../../hooks';
 
 const SignUpForm = (): ReactElement => {
   const [user, setUser] = useState<UserInfo & SignUser>({
@@ -10,6 +17,9 @@ const SignUpForm = (): ReactElement => {
     email: '',
     password: '',
   });
+  const [error, setError] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
@@ -19,10 +29,29 @@ const SignUpForm = (): ReactElement => {
     setUser({ ...user, [name]: value });
   };
 
+  const checkData = (user: UserInfo & SignUser) => {
+    return Object.values(user).every((data) => data.length >= 4);
+  };
+
   const toSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    navigate('/kommune');
+    if (checkData(user))
+      createUser({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        password: user.password,
+        dispatch,
+        navigate,
+      });
+    else {
+      setError(true);
+    }
   };
+
+  useEffect(() => {
+    if (checkData(user)) setError(false);
+  }, [user]);
 
   const content: ReactElement = (
     <form className="form" noValidate onSubmit={toSubmit}>
@@ -35,6 +64,9 @@ const SignUpForm = (): ReactElement => {
             onChange,
             placeholder: 'Enter first name',
             name: 'firstName',
+            error,
+            errorMessage:
+              'firstName cannot be empty nor less than 4 characters',
           }}
         />
         <Input
@@ -44,6 +76,8 @@ const SignUpForm = (): ReactElement => {
             onChange,
             placeholder: 'Enter last name',
             name: 'lastName',
+            error,
+            errorMessage: 'lastName cannot be empty nor less than 4 characters',
           }}
         />
         <Input
@@ -53,6 +87,9 @@ const SignUpForm = (): ReactElement => {
             onChange,
             placeholder: 'Enter email address',
             name: 'email',
+            error,
+            errorMessage:
+              'email cannot be empty nor less than 4 characters and must include @',
           }}
         />
         <Input
@@ -62,6 +99,8 @@ const SignUpForm = (): ReactElement => {
             onChange,
             placeholder: 'Enter password',
             name: 'password',
+            error,
+            errorMessage: 'password cannot be empty nor less than 4 characters',
           }}
         />
       </div>

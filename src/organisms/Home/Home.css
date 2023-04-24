@@ -47,10 +47,14 @@
   }
 
   .formContainer__form {
-    @apply flex items-center gap-1 px-3 py-2 border rounded transition-all duration-300 hover:border-2 w-3/5;
+    @apply flex items-center gap-1 px-3 py-2 border rounded transition-all duration-300 hover:border-2 w-3/5 relative;
   }
 
   .formContainer__form input {
     @apply bg-transparent w-full;
+  }
+
+  .btn__white--form {
+    @apply absolute top-1/2 -translate-y-1/2 left-[105%];
   }
 }

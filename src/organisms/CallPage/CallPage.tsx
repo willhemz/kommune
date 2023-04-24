@@ -1,62 +1,77 @@
 import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import { configuration, useAppSelector } from '../../hooks';
+import { DocumentData, doc, getDoc } from 'firebase/firestore';
+import db from '../../firebase';
+import { useNavigate } from 'react-router-dom';
+
+type Func = React.Dispatch<React.SetStateAction<MediaStream | null>>;
 
 const CallPage = (): ReactElement => {
-  // Default ICE config
-  const configuration = {
-    iceServers: [
-      {
-        urls: [
-          'stun:stun1.l.google.com:19302',
-          'stun:stun2.l.google.com:19302',
-        ],
-      },
-    ],
-    iceCandidatePoolSize: 10,
-  };
+  // new instance and listeners of RTCPeerConnection
+  const peerConnection = new RTCPeerConnection(configuration);
+  const { roomId, streamer, remoteStreamer } = useAppSelector(
+    (state) => state.user
+  );
+  const navigate = useNavigate();
 
   // refs to video elements to display stream
   const localVideoRef = useRef<HTMLVideoElement>(null!);
   const remoteVideoRef = useRef<HTMLVideoElement>(null!);
 
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
 
-  // handle events
-  const handleICECandidate = (evt: RTCPeerConnectionIceEvent) => {
-    if (evt.candidate) {
-      // send the ICE Candidate to the remote peer
+  const searchRoom = async () => {
+    const dbref = doc(db, 'rooms', roomId);
+    try {
+      const roomSnap = await getDoc(dbref);
+      const data = roomSnap.data() as DocumentData;
+      if (!peerConnection.currentRemoteDescription && data.answer) {
+        const answer = new RTCSessionDescription(data.answer);
+        await peerConnection.setRemoteDescription(answer);
+      }
+    } catch (error) {
+      alert(error);
     }
   };
 
-  const handleTrack = (evt: RTCTrackEvent) => {
-    setRemoteStream(evt.streams[0]);
-    if (remoteVideoRef.current)
-      remoteVideoRef.current.srcObject = evt.streams[0];
+  useEffect(() => {
+    setLocalStream(streamer);
+    setRemoteStream(remoteStreamer);
+    if (localVideoRef.current) {
+      localVideoRef.current.srcObject = streamer;
+    }
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = remoteStreamer;
+    }
+  }, []);
+
+  useEffect(() => {
+    searchRoom();
+  });
+
+  const stopStream = (stream: MediaStream | null, func: Func) => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      func(null);
+    }
   };
 
-  // new instance and listeners of RTCPeerConnection
-  const peerConnection = new RTCPeerConnection(configuration);
+  const hangUpCall = () => {
+    const localMedia = localVideoRef.current.srcObject as MediaStream;
+    const remoteMedia = remoteVideoRef.current.srcObject as MediaStream;
+    // const tracks = media.getTracks();
+    Object.values({ localMedia, remoteMedia }).map((tracks) =>
+      tracks.getTracks().forEach((track) => track.stop())
+    );
+    localVideoRef.current.srcObject = null;
+    remoteVideoRef.current.srcObject = null;
 
-  peerConnection.addEventListener('icecandidate', handleICECandidate);
-  peerConnection.addEventListener('track', handleTrack);
+    stopStream(localStream, setLocalStream);
+    stopStream(remoteStream, setRemoteStream);
 
-  // create and set remote session description function
-  const handleOffer = async (description: RTCSessionDescriptionInit) => {
-    await peerConnection.setRemoteDescription(description);
-    const answer = await peerConnection.createAnswer();
-    await peerConnection.setLocalDescription(answer);
-    // send the answer to the remote peer
-  };
-
-  // handle answer from remote peer
-  const handleAnswer = async (description: RTCSessionDescriptionInit) => {
-    await peerConnection.setRemoteDescription(description);
-  };
-
-  // handle start call
-  const startCall = async () => {
-    const offer = await peerConnection.createOffer();
-    await peerConnection.setLocalDescription(offer);
-    // send the offer to the remote peer
+    navigate('/kommune');
+    document.location.reload();
   };
 
   const connection: ReactNode = (
@@ -66,7 +81,18 @@ const CallPage = (): ReactElement => {
     </section>
   );
 
-  const content: ReactElement = <div>{connection}</div>;
+  const hangUpBtn: ReactNode = (
+    <button onClick={hangUpCall} className="btn btn__danger">
+      Hangup
+    </button>
+  );
+
+  const content: ReactElement = (
+    <div>
+      {connection}
+      {hangUpBtn}
+    </div>
+  );
 
   return content;
 };

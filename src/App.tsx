@@ -1,5 +1,5 @@
 import { createBrowserRouter as browser } from 'react-router-dom';
-import { DefaultHome, GetDevices, Home } from './organisms';
+import { CallPage, DefaultHome, GetDevices, Home } from './organisms';
 import { SignForm, SignUpForm } from './molecules';
 
 const App = browser([
@@ -22,8 +22,12 @@ const App = browser([
     element: <Home />,
   },
   {
-    path: '/get-devices',
+    path: '/kommune/get-devices',
     element: <GetDevices />,
+  },
+  {
+    path: '/:roomId',
+    element: <CallPage />,
   },
 ]);
 

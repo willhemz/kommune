@@ -10,9 +10,9 @@ export const setData = (
 ) => {
   const dbRef = doc(db, 'users', email);
   setDoc(dbRef, data)
-    .then((docRef) => {
-      console.log(docRef, 'has been added successfully');
-      navigate('/signup/paymentPicker');
+    .then(() => {
+      console.log('data has been added successfully');
+      navigate('/kommune');
     })
     .catch((error) => {
       console.log(error);

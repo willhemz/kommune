@@ -24,6 +24,10 @@
     @apply w-full py-2 px-3 bg-black text-white;
   }
 
+  .field__label {
+    @apply text-xs text-red-600;
+  }
+
   /* Button */
   .btn {
     @apply px-3 py-2 rounded transition-all duration-500;
@@ -33,6 +37,10 @@
   }
   .btn__blue {
     @apply bg-blue-900 text-white hover:bg-white hover:text-blue-900 hover:border hover:border-blue-900;
+  }
+
+  .btn__danger {
+    @apply bg-red-700 text-white hover:bg-red-200 hover:text-red-700;
   }
 
   /* Form */

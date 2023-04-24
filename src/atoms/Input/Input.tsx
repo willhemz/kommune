@@ -13,8 +13,10 @@ const Input = ({ value, type, setting }: InputType): ReactElement => {
         placeholder={placeholder}
         onChange={onChange}
       />
-      {error !== undefined && error && (
-        <label>{typeof errorMessage === 'string' && errorMessage}</label>
+      {error !== undefined && error && value.length < 1 && (
+        <label className="field__label">
+          {typeof errorMessage === 'string' && errorMessage}
+        </label>
       )}
     </fieldset>
   );
