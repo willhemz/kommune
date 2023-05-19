@@ -3,8 +3,10 @@ import { Outlet } from 'react-router-dom';
 import NavMenu from '../Navmenu/NavMenu';
 import './DefaultHome.css';
 import { Image, ImgBg } from '../../atoms';
+import { useLoad } from '../../hooks';
 
 const DefaultHome = (): ReactElement => {
+  useLoad();
   const url: string = new URL('../../assets/connected.png', import.meta.url)
     .href;
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from './dispatcher';
@@ -9,6 +9,7 @@ import { getData } from './getData';
 export const useLoad = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -21,7 +22,7 @@ export const useLoad = () => {
         dispatch(logout());
         navigate('/');
       }
-      return unsubscribe;
     });
-  }, [auth]);
+    return unsubscribe;
+  }, [auth, dispatch]);
 };

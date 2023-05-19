@@ -26,7 +26,7 @@ const App = browser([
     element: <GetDevices />,
   },
   {
-    path: '/:roomId',
+    path: '/kommune/:roomId',
     element: <CallPage />,
   },
 ]);

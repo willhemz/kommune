@@ -1,8 +1,9 @@
 import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
-import { configuration, useAppSelector } from '../../hooks';
-import { DocumentData, doc, getDoc } from 'firebase/firestore';
+import { configuration, useAppDispatch, useAppSelector } from '../../hooks';
+import { DocumentData, collection, doc, getDoc } from 'firebase/firestore';
 import db from '../../firebase';
 import { useNavigate } from 'react-router-dom';
+import { setStream } from '../../features/UserSlice';
 
 type Func = React.Dispatch<React.SetStateAction<MediaStream | null>>;
 
@@ -12,6 +13,7 @@ const CallPage = (): ReactElement => {
   const { roomId, streamer, remoteStreamer } = useAppSelector(
     (state) => state.user
   );
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   // refs to video elements to display stream
@@ -57,18 +59,29 @@ const CallPage = (): ReactElement => {
     }
   };
 
-  const hangUpCall = () => {
+  const hangUpCall = async () => {
     const localMedia = localVideoRef.current.srcObject as MediaStream;
     const remoteMedia = remoteVideoRef.current.srcObject as MediaStream;
     // const tracks = media.getTracks();
-    Object.values({ localMedia, remoteMedia }).map((tracks) =>
-      tracks.getTracks().forEach((track) => track.stop())
-    );
+    Object.values({ localMedia, remoteMedia }).map((tracks) => {
+      if (tracks) tracks.getTracks().forEach((track) => track.stop());
+    });
+
+    if (peerConnection) peerConnection.close();
+
     localVideoRef.current.srcObject = null;
     remoteVideoRef.current.srcObject = null;
 
     stopStream(localStream, setLocalStream);
     stopStream(remoteStream, setRemoteStream);
+    dispatch(setStream(null!));
+
+    // Delete room on hangup
+    if (roomId) {
+      const dbref = doc(db, 'rooms', roomId);
+      const calleeCandidates = collection(dbref, 'calleeCandidates');
+      // const callee = await getDoc(calleeCandidates)
+    }
 
     navigate('/kommune');
     document.location.reload();

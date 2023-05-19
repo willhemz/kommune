@@ -4,53 +4,40 @@ import './Home.css';
 import { Image, ImgBg } from '../../atoms';
 import { BiVideoPlus } from 'react-icons/bi';
 import { MdOutlineKeyboardAlt } from 'react-icons/md';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
+  addDoc,
+  collection,
   doc,
   getDoc,
   setDoc,
   updateDoc,
+  onSnapshot,
 } from 'firebase/firestore';
 import db from '../../firebase';
 import {
+  handleICECandidate,
+  handleTrack,
   peerConnection,
   registerPeerConnectionListeners,
   useAppDispatch,
   useAppSelector,
+  useLoad,
 } from '../../hooks';
 import { setRemoteStream } from '../../features/UserSlice';
 import { Offer } from '../../models';
 
 const Home = (): ReactElement => {
-  const link = useParams();
-  console.log(link);
-
+  useLoad();
   const url: string = new URL('../../assets/connected.png', import.meta.url)
     .href;
   const inputRef = useRef<HTMLInputElement>(null!);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { streamer } = useAppSelector((state) => state.user);
-
-  // handle events
-  const handleICECandidate = async (
-    evt: RTCPeerConnectionIceEvent,
-    roomId: string
-  ) => {
-    if (evt.candidate) {
-      // send the ICE Candidate to the remote peer
-      const json = evt.candidate.toJSON();
-      const candidatesRef = doc(db, 'rooms', roomId);
-      await setDoc(candidatesRef, json);
-    }
-  };
-
-  const handleTrack = (evt: RTCTrackEvent) => {
-    dispatch(setRemoteStream(evt.streams[0]));
-  };
 
   // create and set remote session description function
   const handleOffer = async (
@@ -96,7 +83,9 @@ const Home = (): ReactElement => {
     peerConnection.addEventListener('icecandidate', (evt) =>
       handleICECandidate(evt, roomId)
     );
-    peerConnection.addEventListener('track', handleTrack);
+    peerConnection.addEventListener('track', (evt) =>
+      handleTrack(evt, dispatch)
+    );
   };
 
   const icon: ReactNode = (
