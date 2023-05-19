@@ -10,6 +10,8 @@ import {
   registerPeerConnectionListeners,
   useAppDispatch,
   peerConnection,
+  handleICECandidate,
+  handleTrack,
 } from '../../hooks';
 import { setRoomId, setStream } from '../../features/UserSlice';
 
@@ -71,6 +73,13 @@ const GetDevices = (): ReactElement => {
 
       const dbRef = collection(db, 'rooms');
       const roomRef = await addDoc(dbRef, roomWithOffer);
+
+      peerConnection.addEventListener('icecandidate', (evt) =>
+        handleICECandidate(evt, roomId)
+      );
+      peerConnection.addEventListener('track', (evt) =>
+        handleTrack(evt, dispatch)
+      );
 
       const roomId = roomRef.id;
       dispatch(setRoomId(roomId));

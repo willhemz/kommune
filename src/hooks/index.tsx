@@ -5,5 +5,9 @@ export { getData } from './getData';
 export { setData } from './setData';
 export { useLoad } from './useLoad';
 export { configuration } from './configuration';
-export { peerConnection } from './peerConnection';
-export { registerPeerConnectionListeners } from './peerConnection';
+export {
+  peerConnection,
+  registerPeerConnectionListeners,
+} from './peerConnection';
+
+export { handleTrack, handleICECandidate } from './candidate';

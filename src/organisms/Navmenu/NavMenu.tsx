@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 import { Button } from '../../atoms';
-import { useAppSelector, useLoad } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import './NavMenu.css';
 
@@ -29,8 +29,6 @@ const NavMenu = (): ReactElement => {
     'November',
     'December',
   ];
-
-  useLoad();
 
   const currentTime: ReactNode = (
     <div className="nav__footer--time">
